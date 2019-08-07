@@ -1,0 +1,51 @@
+h2 {
+    margin: 0;
+    padding-top: .15em;
+}
+
+/* #mail {
+    display: block;
+    margin-top: .7em;
+    padding-right: 2em;
+} */
+
+/* .active a {
+    cursor: default !important;
+} */
+
+#graphic img {
+    vertical-align: middle;
+    margin-top: 10%;
+    margin-bottom: 25%;
+    width: 100%;
+}
+
+#checkboxes .checkbox-inline label {
+    font-weight: 400 !important;
+}
+
+.vcenter {
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle;
+    float: none;
+ }
+
+ .state {
+     text-transform: uppercase;
+ }
+
+ .member-row .photo img {
+    display: inline-block;
+    width: 80px;
+ }
+
+[v-cloak] {
+    display: none;
+}
+
+.scrollable-menu{
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}

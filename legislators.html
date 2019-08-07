@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Legislators - TGIF</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="scripts/colorbox-master/example1/colorbox.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+</head>
+
+<body id="legislators">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-6 vcenter">
+                <a href="index.html"><img alt="TGIF Logo" src="resources/user-alt-128.png" width="40"></a><span class="h2 vcenter">TGIF</span>
+            </div><!--
+            --><div class="col-xs-6 vcenter text-right">
+                <a href="mailto:info@tgif.net"><span class="h5">info@tgif.net</span></a>
+            </div>
+        </div>
+
+        <nav class="well well-sm">
+            <ul class="nav nav-pills">
+                <li><a href="index.html">Home</a></li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        Congress 113 <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="senate.html">Senate</a></li>
+                        <li><a href="house.html">House</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        Attendance <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="senate_attendance.html">Senate</a></li>
+                        <li><a href="house_attendance.html">House</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        Party Loyalty <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="senate_loyalty.html">Senate</a></li>
+                        <li><a href="house_loyalty.html">House</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown active">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        State Legislatures <span class="caret"></span>
+                    </a>
+                    <ul id="legislature" class="dropdown-menu scrollable-menu">
+                        <li v-for="state in sortedStates"><a v-bind:href="`legislators.html?state=${state.abbreviation}`">{{state.name}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class=row>
+            <div class="col-xs-8">
+                <h2>Legislators</h2>
+                <p>The major power of the House is to pass federal legislation that affects the entire country,
+                    although its bills must also be passed by the Senate and further agreed to by the U.S. President
+                    before becoming law (unless both the House and Senate re-pass the legislation with a two-thirds
+                    majority in each chamber). The House has some exclusive powers: the power to initiate revenue
+                    bills, to impeach officials (impeached officials are subsequently tried in the Senate), and to
+                    elect the U.S. President in case there is no majority in the Electoral College.</p>
+                <p>Each U.S. state is represented in the House in proportion to its population as measured in the
+                    census, but every state is entitled to at least one representative.</p>
+            </div>
+            <div class="col-xs-4">
+
+            </div>
+        </div>
+
+        <!-- <form class="form-inline" action="#">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 vcenter">
+                    <div id="checkboxes" class="form-group">
+                        <label for="R">Filter by party:</label>
+                        <label class="checkbox-inline"><input id="R" type="checkbox">Republican</label>
+                        <label class="checkbox-inline"><input id="D" type="checkbox">Democrat</label>
+                        <label class="checkbox-inline"><input id="I" type="checkbox">Independent</label>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4 vcenter text-right">
+                    <div class="form-group">
+                        <label for="state-select">Filter by state:</label>
+                        <select class="form-control" id="state-select">
+                            <option value="">----</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form> -->
+        <!-- TABLE -->
+        <table id="member-data" class="table table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Chamber Title</th>
+                    <th scope="col">Party Affiliation</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Email address</th>
+                </tr>
+            </thead>
+            <tbody v-cloak>
+                <tr class="member-row" v-for="member in membersWPhoto">
+                    <td class="photo"><img v-bind:src="member.photo_url" onerror="this.src='resources/team-placeholder.jpg'" alt="Legislator photo"></td>
+                    <td class="name"><a v-if="member.url" class="iframe" v-bind:href="member.url">{{member.first_name}} {{member.middle_name}} {{member.last_name}}</a><span v-else>{{member.first_name}} {{member.middle_name}} {{member.last_name}}</span></td> 
+                    <td class="chamber">{{member.chamberTitle}}</td>
+                    <td class="party">{{member.party}}</td>
+                    <td class="state">{{member.state}}</td>
+                    <td class="email"><a v-bind:href="`mailto:${member.email}`">{{member.email}}</a></td>
+                </tr>
+            </tbody> 
+        </table>
+        
+        <div class="well well-sm">
+            <footer class="row">
+                <div class="col-xs-4 col-xs-offset-4 text-center">&copy;2019 TGIF | All&NonBreakingSpace;Rights&NonBreakingSpace;Reserved</div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="scripts/colorbox-master/jquery.colorbox-min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+
+</html>

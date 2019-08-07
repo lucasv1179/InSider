@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>House Member Attendance - TGIF</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="scripts/colorbox-master/example1/colorbox.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+</head>
+
+<body id="house-attendance">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-6 vcenter">
+                <a href="index.html"><img alt="TGIF Logo" src="resources/user-alt-128.png" width="40"></a><span class="h2 vcenter">TGIF</span>
+            </div><!--
+            --><div class="col-xs-6 vcenter text-right">
+                <a href="mailto:info@tgif.net"><span class="h5">info@tgif.net</span></a>
+            </div>
+        </div>
+        
+        <nav class="well well-sm">
+            <ul class="nav nav-pills">
+                <li><a href="index.html">Home</a></li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        Congress 113 <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="senate.html">Senate</a></li>
+                        <li><a href="house.html">House</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown active">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        Attendance <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="senate_attendance.html">Senate</a></li>
+                        <li class="active"><a href="house_attendance.html">House</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        Party Loyalty <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="senate_loyalty.html">Senate</a></li>
+                        <li><a href="house_loyalty.html">House</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        State Legislatures <span class="caret"></span>
+                    </a>
+                    <ul id="legislature" class="dropdown-menu scrollable-menu">
+                        <li v-for="state in sortedStates"><a v-bind:href="`legislators.html?state=${state.abbreviation}`">{{state.name}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Attendance</h2>
+                <p>The Constitution specifies that a majority of members constitutes a quorum to do business in each
+                    house. Representatives and senators rarely force the presence of a quorum by demanding quorum
+                    calls;
+                    thus, in most cases, debates continue even if a majority is not present.</p>
+
+                <p>The Senate uses roll-call votes; a clerk calls out the names of all the senators, each senator
+                    stating "aye" or "no" when his or her name is announced. The House reserves roll-call votes for
+                    the
+                    most formal matters, as a roll-call of all 435 representatives takes quite some time; normally,
+                    members vote by electronic device. In the case of a tie, the motion in question fails. In the
+                    Senate, the Vice President may (if present) cast the tiebreaking vote.</p>
+            </div>
+            <div class="col-sm-6">
+                <h2>House at a glance</h2>
+                <table id="glance" class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Party</th>
+                            <th>Number of Reps</th>
+                            <th>% Voted with Prty</th>
+                        </tr>
+                    </thead>
+                    <tbody v-cloak v-for="(party, key) in atAGlance">
+                        <tr>
+                            <td>{{party.party}}</td>
+                            <td class="n_of_reps">{{party.number}}</td>
+                            <td class="vote_w_party">{{party.votes_percent}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Least Engaged (Bottom 10% Attendance)</h2>
+                <table id="least" class="table table-hover table-condensed table-display">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Number of Missed Votes</th>
+                            <th scope="col">% Missed</th>
+                        </tr>
+                    </thead>
+                    <tbody v-cloak id="least_engaged">
+                        <tr v-for="member in param">
+                            <td class="least_engaged_member"><a v-if="member.url" class="iframe" v-bind:href="member.url">{{member.member}}</a><span v-else>{{member.member}}</span></td>
+                            <td class="missed_votes">{{member.missedVotes}}</td>
+                            <td class="missed_votes_pct">{{member.missedVotesPct}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-6">
+                <h2>Most Engaged (Top 10% Attendance)</h2>
+                <table id="most" class="table table-hover table-condensed table-display">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Number of Missed Votes</th>
+                            <th scope="col">% Missed</th>
+                        </tr>
+                    </thead>
+                    <tbody v-cloak id="most_engaged">
+                        <tr v-for="member in param">
+                            <td class="most_engaged_member"><a v-if="member.url" class="iframe" v-bind:href="member.url">{{member.member}}</a><span v-else>{{member.member}}</span></td>
+                            <td class="missed_votes">{{member.missedVotes}}</td>
+                            <td class="missed_votes_pct">{{member.missedVotesPct}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="bg-info well well-sm">
+            <footer class="row">
+                <div class="col-xs-4 col-xs-offset-4 text-center">&copy;2019 TGIF |
+                    All&NonBreakingSpace;Rights&NonBreakingSpace;Reserved
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="scripts/colorbox-master/jquery.colorbox-min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js"></script>
+    <script src="scripts/stats.js"></script>
+    <script src="scripts/main.js"></script>
+    <script>$(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});</script> <!--COLORBOX-->
+    <script> //DATATABLE
+        $(document).ready( function() {
+            $('table.table-display').DataTable( {
+                "scrollY": "400px",
+                "scrollCollapse": true,
+                "paging": false,
+                "searching": true,
+                "info": false
+            });
+
+            var allTables = $.fn.dataTable.fnTables();
+            
+            $(allTables[0]).dataTable().fnSort([[2, "desc"]]);
+            $(allTables[1]).dataTable().fnSort([[2, "asc"]]);
+        });
+    </script>
+</body>
+
+</html>
