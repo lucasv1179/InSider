@@ -1,5 +1,5 @@
 # InSider
-Website showing US congress data (part of Full Stack Development course)
+Website showing USA congress data (part of Full Stack Development course)
 
 http://lucasv1179.epizy.com/insider/
 
